@@ -1,67 +1,24 @@
-# [Laravel](http://laravel.com) - A PHP Framework For Web Artisans
+# Simple SwiftMailer send email example using Laravel PHP Framework and Gmail account.
 
-Laravel is a clean and classy framework for PHP web development. Freeing you
-from spaghetti code, Laravel helps you create wonderful applications using
-simple, expressive syntax. Development should be a creative experience that you
-enjoy, not something that is painful. Enjoy the fresh air.
+Tutorial and a screencast are on Udemy: http://www.udemy.com/develop-web-apps-with-laravel-php-framework/  <- Laravel tutorials and a course by msurguy
 
-[Official Website & Documentation](http://laravel.com)
+The features of this simple web application are :
++ twitter bootstrap layout implemented by bootstrapper bundle
++ send email using swiftmailer laravel bundle 
 
-## Feature Overview
+To get this application working on your machine, have a local server running and copy this folder in your web directory, then navigate to its public folder in the browser, if you see a screen that says "Hello Laravel World", proceed to next step: 
 
-- Simple routing using Closures or controllers.
-- Views and templating.
-- Driver based session and cache handling.
-- Database abstraction with query builder.
-- Authentication.
-- Migrations.
-- PHPUnit Integration.
-- A lot more.
+Open up "routes.php" file in the "application" folder, 
+edit the variables below "Route::get('sendemail', function()"
+to match your email credentials, and edit the contents of your message, subject, and who the email will be sent to.
 
-## A Few Examples
 
-### Hello World:
+That's it, you should be able send emails by pressing Send Email button from the application's home page.
 
-```php
-<?php
+## Contributing to This code
 
-Route::get('/', function()
-{
-	return "Hello World!":
-});
-```
-
-### Passing Data To Views:
-
-```php
-<?php
-
-Route::get('user/(:num)', function($id)
-{
-	$user = DB::table('users')->find($id);
-
-	return View::make('profile')->with('user', $user);
-});
-```
-
-### Redirecting & Flashing Data To The Session:
-
-```php
-<?php
-
-return Redirect::to('profile')->with('message', 'Welcome Back!');
-```
-
-## Contributing to Laravel
-
-Contributions are encouraged and welcome; however, please review the Developer
-Certificate of Origin in the "license.txt" file included in the repository. All
-commits must be signed off using the `-s` switch.
-
-```bash
-git commit -s -m "this commit will be signed off automatically!"
-```
+Contributions are encouraged and welcome. Submit pull requests or ask questions if something's not clear
 
 ## License
 
-Laravel is open-sourced software licensed under the MIT License.
+This code is open source and is under MIT license.
