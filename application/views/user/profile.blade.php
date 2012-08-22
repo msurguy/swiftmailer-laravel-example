@@ -17,7 +17,7 @@
     <div class="row">
       <div class="span4 well">
         <div class="row">
-          <div class="span1"><a href="{{action('others@show', array(Auth::User()->username));}}" class="thumbnail"><img src="http://placehold.it/60x60" alt=""></a></div>
+          <div class="span1"><a href="{{action('others@show', array(Auth::User()->username));}}" class="thumbnail"><img src="../img/user.jpg" alt=""></a></div>
           <div class="span3">
             <h3>{{Auth::User()->username}}</h3>
             <h3>First Last Name</h3>

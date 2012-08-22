@@ -6,7 +6,7 @@
   @foreach ($critts -> results as $critt)
     <hr />
     <div class="row">
-      <div class="span1"><a href="{{action('others@show', array($critt->user->username));}}" class="thumbnail"><img src="http://placehold.it/60x60" alt=""></a>
+      <div class="span1"><a href="{{action('others@show', array($critt->user->username));}}" class="thumbnail"><img src="./img/user.jpg" alt=""></a>
       </div>
       <div class="span5">
         <h3><a href="{{action('others@show', array($critt->user->username));}}">{{$critt->user->username}}</a></h3>
