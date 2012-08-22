@@ -36,6 +36,7 @@
           </a>
           <a class="brand" href="{{URL::base();}}">Critter</a>
           <div class="btn-group pull-right">
+
             @if ( Auth::guest())
               <a class="btn" href="{{ URL::to_action('home@login')}}">
                 <i class="icon-user"></i> Login
