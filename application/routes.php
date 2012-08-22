@@ -1,96 +1,8 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Simply tell Laravel the HTTP verbs and URIs it should respond to. It is a
-| breeze to setup your application using Laravel's RESTful routing and it
-| is perfectly suited for building large applications and simple APIs.
-|
-| Let's respond to a simple GET request to http://example.com/hello:
-|
-|		Route::get('hello', function()
-|		{
-|			return 'Hello World!';
-|		});
-|
-| You can even respond to more than one URI:
-|
-|		Route::post(array('hello', 'world'), function()
-|		{
-|			return 'Hello World!';
-|		});
-|
-| It's easy to allow URI wildcards using (:num) or (:any):
-|
-|		Route::put('hello/(:any)', function($name)
-|		{
-|			return "Welcome, $name.";
-|		});
-|
-*/
+Route::get('others/(:any)', 'others@show');
+Route::controller(Controller::detect());
 
-Route::get('/', function()
-{
-	return View::make('home.index');
-});
-
-Route::get('sendemail', function()
-{
-	$username = "youremail@gmail.com";
-	$password = "password";
-	$from_address 	= "youremail@gmail.com";
-	$from_name 		= "YourName";
-	$to_address 	= "toemail@gmail.com";
-	$to_name		= "toName";
-	$message_subj	= "Hello there";
-	$plain_message	= "Lalalala";
-	$html_message	= "<a href='http://maxoffsky.com'>Maxoffsky!</a>";
-
-	$mailer = IoC::resolve('mailer');
-
-	$transporter = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl')
-	  ->setUsername($username)
-	  ->setPassword($password);
-
-	$mailer = Swift_Mailer::newInstance($transporter);
-
-
-	// Construct the message
-	$message = Swift_Message::newInstance('Message From Website')
-	    ->setFrom(array($from_address=>$from_name))
-	    ->setTo(array($to_address=>$to_name))
-	    ->addPart($plain_message,'text/plain')
-	    ->setBody($html_message,'text/html');
-
-	// Send the email
-	$numSent = $mailer->send($message);
-
-	if ($numSent == 1) {
-		$status_message = "Success! Email has been sent!";
-	} else {
-		$status_message = "Error, email was not sent...";
-	}
-	
-	return View::make('home.index')->with('status_message', $status_message);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Application 404 & 500 Error Handlers
-|--------------------------------------------------------------------------
-|
-| To centralize and simplify 404 handling, Laravel uses an awesome event
-| system to retrieve the response. Feel free to modify this function to
-| your tastes and the needs of your application.
-|
-| Similarly, we use an event to handle the display of 500 level errors
-| within the application. These errors are fired when there is an
-| uncaught exception thrown in the application.
-|
-*/
 
 Event::listen('404', function()
 {
@@ -102,33 +14,6 @@ Event::listen('500', function()
 	return Response::error('500');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Route Filters
-|--------------------------------------------------------------------------
-|
-| Filters provide a convenient method for attaching functionality to your
-| routes. The built-in before and after filters are called before and
-| after every request to your application, and you may even create
-| other filters that can be attached to individual routes.
-|
-| Let's walk through an example...
-|
-| First, define a filter:
-|
-|		Route::filter('filter', function()
-|		{
-|			return 'Filtered!';
-|		});
-|
-| Next, attach the filter to a route:
-|
-|		Router::register('GET /', array('before' => 'filter', function()
-|		{
-|			return 'Hello World!';
-|		}));
-|
-*/
 
 Route::filter('before', function()
 {
@@ -147,5 +32,5 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+	if (Auth::guest()) return Redirect::to_action('home@login');
 });

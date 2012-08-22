@@ -35,7 +35,6 @@
 
 return array(
 	'bootstrapper' => array('auto' => true),
-	'swiftmailer' => array('auto'=>true),
 	'docs' => array('handles' => 'docs'),
 
 );

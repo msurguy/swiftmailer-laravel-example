@@ -2,37 +2,75 @@
 
 class Home_Controller extends Base_Controller {
 
-	/*
-	|--------------------------------------------------------------------------
-	| The Default Controller
-	|--------------------------------------------------------------------------
-	|
-	| Instead of using RESTful routes and anonymous functions, you might wish
-	| to use controllers to organize your application API. You'll love them.
-	|
-	| This controller responds to URIs beginning with "home", and it also
-	| serves as the default controller for the application, meaning it
-	| handles requests to the root of the application.
-	|
-	| You can respond to GET requests to "/home/profile" like so:
-	|
-	|		public function action_profile()
-	|		{
-	|			return "This is your profile!";
-	|		}
-	|
-	| Any extra segments are passed to the method as parameters:
-	|
-	|		public function action_profile($id)
-	|		{
-	|			return "This is the profile for user {$id}.";
-	|		}
-	|
-	*/
+	public $restful = true;
 
-	public function action_index()
+	public function get_index()
 	{
-		return View::make('home.index');
+		if (Auth::guest()){
+			return View::make('home.index');
+		} else {
+			$critts = Critt::with('user') -> order_by('created_at','desc') -> paginate(10) ;
+			$count = Critt::count() ;
+			return View::make('home.critterfeed')
+				-> with('count', $count)
+				-> with('critts', $critts);
+		}
+	}
+
+	public function post_index()
+	{
+		$new_user = array(
+	        'name'		=> Input::get('name'),
+	        'username'  => Input::get('new_username'),
+	        'password'  => Input::get('new_password')
+    	);
+   
+    	$rules = array(
+	        'name'		=>	'required|min:3|max:255',
+	        'username'  =>	'required|min:3|max:128|alpha_dash|unique:users',
+	        'password'	=>	'required|min:3|max:128'
+    	);
+    
+	    $validation = Validator::make($new_user, $rules);
+	    if ( $validation -> fails() )
+	    {   
+	        return Redirect::home()
+	                ->with('user', Auth::user())
+	                ->with_errors($validation)
+	                ->with_input('except', array('new_password'));
+	    }
+	    $new_user['password'] = Hash::make($new_user['password']);
+	    $user = new User($new_user);
+	    $user->save();
+	    return Redirect::to_action('home@login') -> with('success_message', true);
+	}
+
+	public function get_login()
+	{
+    	return View::make('home.login');
+	}
+
+	public function post_login()
+	{
+ 		$credentials = array(
+ 			'username' => Input::get('username'), 
+ 			'password' => Input::get('password')
+ 		);
+ 		
+    	if (Auth::attempt( $credentials ))
+		{
+		 	return Redirect::to_action('user@index');
+		}else{
+			return Redirect::to_action('home@login')
+			-> with_input('only', array('new_username')) 
+			-> with('login_errors', true);
+        }
+	}
+
+	public function get_logout()
+	{
+		Auth::logout();
+		return Redirect::to_action('home@login') -> with('logout_message', true);
 	}
 
 }

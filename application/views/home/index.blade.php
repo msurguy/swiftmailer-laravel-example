@@ -1,55 +1,40 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Laravel: A Framework For Web Artisans</title>
-	<meta name="viewport" content="width=device-width">
-	{{ Asset::container('bootstrapper')->styles(); }}
-	{{ Asset::container('bootstrapper')->scripts(); }}
-</head>
-<body>
-	<div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
-    </div>
+@layout('templates.template')
 
-    <div class="container">
-
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Hello, Laravel world!</h1>
-        <p>Let's Learn to send email!</p>
-        <p><a class="btn btn-primary btn-large" href="{{URL::to('sendemail');}}">Send Email</a></p>
-
-        @if (isset($status_message))
-        {{ Alert::info($status_message); }}
-        @endif 
-        
-      </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; Company 2012</p>
-      </footer>
-
-    </div> <!-- /container -->
-
-</body>
-</html>
+@section('content')
+<div class="span8 offset2">
+    <div class="row artwork hidden-phone" style="font-size:80px; text-align: center;">
+		<div class="span2"><i class="icon-group"></i></div>
+		<div class="span2"><i class="icon-comments-alt"></i></div>
+		<div class="span2"><i class="icon-globe"></i></div>
+		<div class="span2"><i class="icon-thumbs-up"></i></div>
+	</div>
+	<hr />
+	<div class="row">
+		<div class="span4">
+		<p class="lead"> Sign in</p>
+			{{ Form::open('home/login', 'POST',array('class'=>'well')); }}
+			{{ Form::token() }}
+			@if (Session::has('login_errors'))
+			{{ Alert::error("Username or password incorrect.") }}
+			@endif
+			{{ Form::text('username', Input::old('username'), array('class' => 'span3', 'placeholder' => 'Username'));}}
+			{{ Form::password('password', array('class' => 'span3', 'placeholder' => 'Password'));}}
+			{{ Form::labelled_checkbox('remember_me', 'Remember Me');}}
+			{{ Form::submit('Login to Critter', array('class'=>'btn-info'));}}
+			{{ Form::close() }}
+		</div>
+		<div class="span4">
+			<p class="lead">New to Critter? Sign up!</p>
+			{{ Form::open('/', 'POST',array('class'=>'well')); }}
+			{{ $errors->first('name', Alert::error(":message")) }}
+			{{ Form::text('name', Input::old('name'), array('class' => 'span3', 'placeholder' => 'Full Name'));}}
+			{{ $errors->first('username', Alert::error(":message")) }}
+			{{ Form::text('new_username', Input::old('new_username'), array('class' => 'span3', 'placeholder' => 'Username'));}}
+			{{ $errors->first('password', Alert::error(":message")) }}
+			{{ Form::password('new_password', array('class' => 'span3', 'placeholder' => 'New Password'));}}
+			{{ Form::submit('Sign up for Critter', array('class'=>'btn-warning'));}}
+			{{ Form::close() }}
+		</div>
+	</div>
+</div>
+@endsection
